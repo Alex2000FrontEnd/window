@@ -94,6 +94,52 @@ function slider() {
 
 /***/ }),
 
+/***/ "./src/js/modules/tabs.js":
+/*!********************************!*\
+  !*** ./src/js/modules/tabs.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function tabs(wrapperMenuSelector, menusSelector, contentsSelector, activeClassMenu) {
+  const wrapperMenu = document.querySelector(wrapperMenuSelector),
+    menus = wrapperMenu.querySelectorAll(menusSelector),
+    contents = document.querySelectorAll(contentsSelector);
+  function showTab(i = 0) {
+    contents[i].style.display = 'block';
+    menus[i].classList.add(activeClassMenu);
+  }
+  function hideTab() {
+    contents.forEach(content => {
+      content.style.display = 'none';
+    });
+    menus.forEach(menu => {
+      menu.classList.remove(activeClassMenu);
+    });
+  }
+  hideTab();
+  showTab();
+  wrapperMenu.addEventListener('click', e => {
+    e.preventDefault();
+    const t = e.target;
+    if (t && t.closest(menusSelector)) {
+      menus.forEach((menu, i) => {
+        if (t.closest(menusSelector) === menu) {
+          hideTab();
+          showTab(i);
+        }
+      });
+    }
+  });
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (tabs);
+
+/***/ }),
+
 /***/ "./node_modules/jquery/dist/jquery.js":
 /*!********************************************!*\
   !*** ./node_modules/jquery/dist/jquery.js ***!
@@ -13918,10 +13964,17 @@ var __webpack_exports__ = {};
   \************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/slider */ "./src/js/modules/slider.js");
+/* harmony import */ var _modules_tabs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/tabs */ "./src/js/modules/tabs.js");
 
 
+// jquery + slick-carousel
 
-(0,_modules_slider__WEBPACK_IMPORTED_MODULE_0__["default"])();
+
+document.addEventListener('DOMContentLoaded', () => {
+  (0,_modules_slider__WEBPACK_IMPORTED_MODULE_0__["default"])();
+  (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_1__["default"])('.glazing_slider', '.glazing_block', '.glazing_content', 'active');
+  (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_1__["default"])('.decoration_slider', '[data-menu-tab="order"]', '[data-content-tab="order"]', 'after_click');
+});
 })();
 
 /******/ })()
