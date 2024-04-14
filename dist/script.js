@@ -1,6 +1,50 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/js/modules/modal.js":
+/*!*********************************!*\
+  !*** ./src/js/modules/modal.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function modal(triggersSelector, modalSelector) {
+  const triggers = document.querySelectorAll(triggersSelector),
+    modal = document.querySelector(modalSelector);
+  let idInterval;
+  if (modal.classList.contains('popup')) {
+    idInterval = setInterval(showModal, 3000);
+  }
+  function showModal() {
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+    clearInterval(idInterval);
+  }
+  function hideModal() {
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+  triggers.forEach(trigger => {
+    trigger.addEventListener('click', e => {
+      e.preventDefault();
+      showModal();
+    });
+  });
+  modal.addEventListener('click', e => {
+    const t = e.target;
+    if (t && (t.closest('.popup_close') || t === modal)) {
+      hideModal();
+    }
+  });
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (modal);
+
+/***/ }),
+
 /***/ "./src/js/modules/slider.js":
 /*!**********************************!*\
   !*** ./src/js/modules/slider.js ***!
@@ -14027,9 +14071,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_slider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modules/slider */ "./src/js/modules/slider.js");
 /* harmony import */ var _modules_tabs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/tabs */ "./src/js/modules/tabs.js");
 /* harmony import */ var _modules_timer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/timer */ "./src/js/modules/timer.js");
+/* harmony import */ var _modules_modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/modal */ "./src/js/modules/modal.js");
 
 
 // jquery + slick-carousel
+
 
 
 
@@ -14038,6 +14084,8 @@ document.addEventListener('DOMContentLoaded', () => {
   (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_1__["default"])('.glazing_slider', '.glazing_block', '.glazing_content', 'active');
   (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_1__["default"])('.decoration_slider', '[data-menu-tab="order"]', '[data-content-tab="order"]', 'after_click');
   (0,_modules_timer__WEBPACK_IMPORTED_MODULE_2__["default"])('2024-06-01', '#timer', '#days', '#hours', '#minutes', '#seconds');
+  (0,_modules_modal__WEBPACK_IMPORTED_MODULE_3__["default"])('.popup_engineer_btn', '.popup_engineer');
+  (0,_modules_modal__WEBPACK_IMPORTED_MODULE_3__["default"])('.phone_link', '.popup');
 });
 })();
 

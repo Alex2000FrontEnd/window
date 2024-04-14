@@ -4,6 +4,7 @@
 import slider from './modules/slider';
 import tabs from './modules/tabs';
 import timer from './modules/timer';
+import modal from './modules/modal';
 
 document.addEventListener('DOMContentLoaded', () => {
     slider();
@@ -29,5 +30,15 @@ document.addEventListener('DOMContentLoaded', () => {
         '#hours',
         '#minutes',
         '#seconds'
+    );
+
+    modal(
+        '.popup_engineer_btn',
+        '.popup_engineer'
+    );
+
+    modal(
+        '.phone_link',
+        '.popup'
     );
 });
