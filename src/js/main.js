@@ -3,6 +3,7 @@
 // jquery + slick-carousel
 import slider from './modules/slider';
 import tabs from './modules/tabs';
+import timer from './modules/timer';
 
 document.addEventListener('DOMContentLoaded', () => {
     slider();
@@ -21,5 +22,12 @@ document.addEventListener('DOMContentLoaded', () => {
         'after_click'
     );
 
-    
+    timer(
+        '2024-06-01',
+        '#timer',
+        '#days',
+        '#hours',
+        '#minutes',
+        '#seconds'
+    );
 });
