@@ -1,10 +1,10 @@
 'use strict';
 
-// jquery + slick-carousel
-import slider from './modules/slider';
+import slider from './modules/slider'; // jquery + slick-carousel
 import tabs from './modules/tabs';
 import timer from './modules/timer';
 import modal from './modules/modal';
+import gallery from './modules/gallery';
 
 document.addEventListener('DOMContentLoaded', () => {
     slider();
@@ -40,5 +40,11 @@ document.addEventListener('DOMContentLoaded', () => {
     modal(
         '.phone_link',
         '.popup'
+    );
+
+    gallery(
+        '.works',
+        '.preview',
+        'assets/img/our_works/big_img/'
     );
 });

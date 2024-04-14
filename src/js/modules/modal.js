@@ -4,7 +4,7 @@ function modal(triggersSelector, modalSelector) {
     let idInterval;
 
     if (modal.classList.contains('popup')) {
-        idInterval = setInterval(showModal, 3000);
+        // idInterval = setInterval(showModal, 60000);
     }
 
     function showModal() {

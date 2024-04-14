@@ -1818,3 +1818,35 @@ textarea:focus {
     animation: none !important;
   }
 }
+
+.gallery-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(17, 17, 17, 80%);
+  z-index: 9999;
+}
+
+@media(max-width: 767px) {
+  .gallery-wrapper {
+    padding: 15px;
+  }
+}
+
+.gallery-img {
+  max-width: 100%;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+}
+
+.gallery-img.resize-img {
+  max-width: auto;
+  width: auto;
+  height: 100%;
+}

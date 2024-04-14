@@ -1,6 +1,72 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/js/modules/gallery.js":
+/*!***********************************!*\
+  !*** ./src/js/modules/gallery.js ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function gallery(parentSelector, imgsSelector, urlToImg) {
+  const wrapper = document.querySelector(parentSelector),
+    imgs = wrapper.querySelectorAll(imgsSelector);
+  function checkImageDimensions() {
+    const wrapperImg = document.querySelector('.gallery-wrapper'),
+      img = wrapperImg.querySelector('img');
+    function setSizeImg() {
+      const windowHeight = window.screen.height,
+        wrapperPadding = window.getComputedStyle(wrapperImg),
+        wrapperPaddingheight = parseInt(wrapperPadding.paddingTop) + parseInt(wrapperPadding.paddingBottom),
+        imgHeight = img.scrollHeight,
+        imgWidth = img.scrollWidth;
+      if (windowHeight <= imgHeight + wrapperPaddingheight) {
+        img.classList.add('resize-img');
+      }
+      if (Math.floor(imgWidth / 4 * 3) + 1 < Math.floor(imgHeight)) {
+        img.classList.remove('resize-img');
+      }
+    }
+    window.addEventListener('resize', setSizeImg);
+    setSizeImg();
+    wrapperImg.addEventListener('click', e => {
+      const t = e.target;
+      if (t && t === wrapperImg) {
+        wrapperImg.remove();
+        document.body.style.overflow = '';
+        window.removeEventListener('resize', setSizeImg);
+      }
+    });
+  }
+  function createImg(i) {
+    document.body.insertAdjacentHTML('beforeend', `
+            <div class="gallery-wrapper">
+                <img class="gallery-img" src="${urlToImg}${i + 1}.png">
+            </div>
+        `);
+    document.body.style.overflow = 'hidden';
+    checkImageDimensions();
+  }
+  wrapper.addEventListener('click', e => {
+    e.preventDefault();
+    const t = e.target;
+    if (t && t.matches(imgsSelector)) {
+      imgs.forEach((img, i) => {
+        if (t === img) {
+          createImg(i);
+        }
+      });
+    }
+  });
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (gallery);
+
+/***/ }),
+
 /***/ "./src/js/modules/modal.js":
 /*!*********************************!*\
   !*** ./src/js/modules/modal.js ***!
@@ -17,7 +83,7 @@ function modal(triggersSelector, modalSelector) {
     modal = document.querySelector(modalSelector);
   let idInterval;
   if (modal.classList.contains('popup')) {
-    idInterval = setInterval(showModal, 3000);
+    // idInterval = setInterval(showModal, 60000);
   }
   function showModal() {
     modal.style.display = 'block';
@@ -14072,9 +14138,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_tabs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/tabs */ "./src/js/modules/tabs.js");
 /* harmony import */ var _modules_timer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/timer */ "./src/js/modules/timer.js");
 /* harmony import */ var _modules_modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/modal */ "./src/js/modules/modal.js");
+/* harmony import */ var _modules_gallery__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/gallery */ "./src/js/modules/gallery.js");
 
 
-// jquery + slick-carousel
+ // jquery + slick-carousel
 
 
 
@@ -14086,6 +14153,7 @@ document.addEventListener('DOMContentLoaded', () => {
   (0,_modules_timer__WEBPACK_IMPORTED_MODULE_2__["default"])('2024-06-01', '#timer', '#days', '#hours', '#minutes', '#seconds');
   (0,_modules_modal__WEBPACK_IMPORTED_MODULE_3__["default"])('.popup_engineer_btn', '.popup_engineer');
   (0,_modules_modal__WEBPACK_IMPORTED_MODULE_3__["default"])('.phone_link', '.popup');
+  (0,_modules_gallery__WEBPACK_IMPORTED_MODULE_4__["default"])('.works', '.preview', 'assets/img/our_works/big_img/');
 });
 })();
 
