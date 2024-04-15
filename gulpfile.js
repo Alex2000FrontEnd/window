@@ -5,6 +5,7 @@ const webpack = require("webpack-stream");
 const browsersync = require("browser-sync");
 
 const dist = "./dist/";
+// const dist = "/application/OSPanel/domains/window";
 
 gulp.task("copy-html", () => {
     return gulp.src("./src/index.html")
@@ -17,7 +18,7 @@ gulp.task("build-js", () => {
                 .pipe(webpack({
                     mode: 'development',
                     output: {
-                        filename: 'script.js'
+                        filename: 'bundle.js'
                     },
                     watch: false,
                     devtool: "source-map",
@@ -69,7 +70,7 @@ gulp.task("build-prod-js", () => {
                 .pipe(webpack({
                     mode: 'production',
                     output: {
-                        filename: 'script.js'
+                        filename: 'bundle.js'
                     },
                     module: {
                         rules: [

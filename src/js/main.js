@@ -5,6 +5,7 @@ import tabs from './modules/tabs';
 import timer from './modules/timer';
 import modal from './modules/modal';
 import gallery from './modules/gallery';
+import forms from './modules/forms';
 
 document.addEventListener('DOMContentLoaded', () => {
     slider();
@@ -47,4 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
         '.preview',
         'assets/img/our_works/big_img/'
     );
+
+    forms();
 });
