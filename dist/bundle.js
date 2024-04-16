@@ -1,6 +1,75 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/js/modules/calc.js":
+/*!********************************!*\
+  !*** ./src/js/modules/calc.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _onlyNumbers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./onlyNumbers */ "./src/js/modules/onlyNumbers.js");
+
+function calc() {
+  const triggersOpenCalc = document.querySelectorAll('.popup_calc_btn'),
+    calcPageOne = document.querySelector('.popup_calc'),
+    calcPageTwo = document.querySelector('.popup_calc_profile'),
+    calcPageThree = document.querySelector('.popup_calc_end'),
+    width = calcPageOne.querySelector('#width'),
+    height = calcPageOne.querySelector('#height'),
+    checkboxes = document.querySelectorAll('.checkbox');
+  function openCalc(page) {
+    document.body.style.overflow = 'hidden';
+    page.style.display = 'block';
+  }
+  function nextOpenModal(trigger, modalHide, modalShow) {
+    document.querySelector(trigger).addEventListener('click', () => {
+      modalHide.style.display = 'none';
+      modalShow.style.display = 'block';
+    });
+  }
+  nextOpenModal('.popup_calc_button', calcPageOne, calcPageTwo);
+  nextOpenModal('.popup_calc_profile_button', calcPageTwo, calcPageThree);
+  function closeModal(close, modalHide) {
+    document.querySelector(close).addEventListener('click', () => {
+      modalHide.style.display = 'none';
+      document.body.style.overflow = '';
+    });
+  }
+  closeModal('.popup_calc_profile_close', calcPageTwo);
+  closeModal('.popup_calc_end_close', calcPageThree);
+
+  ////////////////////////////////////////////////
+
+  triggersOpenCalc.forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      openCalc(calcPageOne);
+    });
+  });
+  calcPageOne.addEventListener('click', e => {
+    const t = e.target;
+    if (t && (t.closest('.popup_calc_close') || t === calcPageOne)) {
+      document.body.style.overflow = '';
+      calcPageOne.style.display = 'none';
+    }
+  });
+  (0,_onlyNumbers__WEBPACK_IMPORTED_MODULE_0__["default"])(width);
+  (0,_onlyNumbers__WEBPACK_IMPORTED_MODULE_0__["default"])(height);
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', e => {
+      checkboxes.forEach(el => el.checked = false);
+      e.target.checked = true;
+    });
+  });
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (calc);
+
+/***/ }),
+
 /***/ "./src/js/modules/forms.js":
 /*!*********************************!*\
   !*** ./src/js/modules/forms.js ***!
@@ -12,23 +81,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _services_services__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./services/services */ "./src/js/modules/services/services.js");
+/* harmony import */ var _onlyNumbers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./onlyNumbers */ "./src/js/modules/onlyNumbers.js");
+
+
 function forms() {
-  const formAll = document.querySelectorAll('form');
+  const formAll = document.querySelectorAll('form'),
+    inputsPhone = document.querySelectorAll('[name="user_phone"]');
+  inputsPhone.forEach(phone => {
+    (0,_onlyNumbers__WEBPACK_IMPORTED_MODULE_1__["default"])(phone);
+  });
   const message = {
     load: 'Отправка формы...',
     succuss: 'Спасибо! Скоро с вами свяжутся',
     error: 'Ошибка! Пожалуйста, попробуйте позже'
   };
-  const postFormData = async (url, body) => {
-    const res = await fetch(url, {
-      method: 'POST',
-      body: body
+  function calcForm(formData) {
+    // calc page one
+    formData.append('balcony shape', document.querySelector('.balcon_icons .balcon_icons_img.do_image_more'));
+    formData.append('width', document.querySelector('#width').value);
+    formData.append('height', document.querySelector('#height').value);
+
+    // calc page two
+    let checkbox = document.querySelectorAll('.checkbox').forEach(item => {
+      if (item.checked === true) return item;
     });
-    if (!res.ok) {
-      throw new Error(`Url: ${url}, status: ${res.status}`);
-    }
-    return res;
-  };
+    formData.append('glazing type', document.querySelector('#view_type').value);
+    formData.append('profile', checkbox);
+  }
   formAll.forEach(form => {
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -38,14 +118,20 @@ function forms() {
                 text-align: center;
             `;
       elementMessage.textContent = message.load;
+      form.append(elementMessage);
       const formData = new FormData(form);
-      postFormData('assets/server.php', formData).then(() => {
+      if (form.getAttribute('data-calc')) {
+        calcForm(formData);
+      }
+      (0,_services_services__WEBPACK_IMPORTED_MODULE_0__.postFormData)('assets/server.php', formData).then(() => {
         elementMessage.textContent = message.succuss;
         setTimeout(() => {
           form.reset();
+          elementMessage.remove();
         }, 3000);
       }).catch(() => {
         elementMessage.textContent = message.error;
+        elementMessage.style.color = 'red';
       });
     });
   });
@@ -164,6 +250,51 @@ function modal(triggersSelector, modalSelector) {
 
 /***/ }),
 
+/***/ "./src/js/modules/onlyNumbers.js":
+/*!***************************************!*\
+  !*** ./src/js/modules/onlyNumbers.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+function onlyNumbers(input) {
+  input.addEventListener('input', () => {
+    input.value = input.value.replace(/\D/ig, '');
+  });
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (onlyNumbers);
+
+/***/ }),
+
+/***/ "./src/js/modules/services/services.js":
+/*!*********************************************!*\
+  !*** ./src/js/modules/services/services.js ***!
+  \*********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   postFormData: () => (/* binding */ postFormData)
+/* harmony export */ });
+const postFormData = async (url, body) => {
+  const res = await fetch(url, {
+    method: 'POST',
+    body: body
+  });
+  if (!res.ok) {
+    throw new Error(`Url: ${url}, status: ${res.status}`);
+  }
+  return res;
+};
+
+
+/***/ }),
+
 /***/ "./src/js/modules/slider.js":
 /*!**********************************!*\
   !*** ./src/js/modules/slider.js ***!
@@ -268,12 +399,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-function tabs(wrapperMenuSelector, menusSelector, contentsSelector, activeClassMenu) {
+function tabs(wrapperMenuSelector, menusSelector, contentsSelector, activeClassMenu, display = 'block') {
   const wrapperMenu = document.querySelector(wrapperMenuSelector),
     menus = wrapperMenu.querySelectorAll(menusSelector),
     contents = document.querySelectorAll(contentsSelector);
   function showTab(i = 0) {
-    contents[i].style.display = 'block';
+    contents[i].style.display = display;
     menus[i].classList.add(activeClassMenu);
   }
   function hideTab() {
@@ -14193,9 +14324,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/modal */ "./src/js/modules/modal.js");
 /* harmony import */ var _modules_gallery__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/gallery */ "./src/js/modules/gallery.js");
 /* harmony import */ var _modules_forms__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/forms */ "./src/js/modules/forms.js");
+/* harmony import */ var _modules_calc__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/calc */ "./src/js/modules/calc.js");
 
 
  // jquery + slick-carousel
+
 
 
 
@@ -14210,6 +14343,8 @@ document.addEventListener('DOMContentLoaded', () => {
   (0,_modules_modal__WEBPACK_IMPORTED_MODULE_3__["default"])('.phone_link', '.popup');
   (0,_modules_gallery__WEBPACK_IMPORTED_MODULE_4__["default"])('.works', '.preview', 'assets/img/our_works/big_img/');
   (0,_modules_forms__WEBPACK_IMPORTED_MODULE_5__["default"])();
+  (0,_modules_calc__WEBPACK_IMPORTED_MODULE_6__["default"])();
+  (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_1__["default"])('.balcon_icons', '.balcon_icons_img', '.big_img img', 'do_image_more', 'inline-block');
 });
 })();
 

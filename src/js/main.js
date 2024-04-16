@@ -6,6 +6,7 @@ import timer from './modules/timer';
 import modal from './modules/modal';
 import gallery from './modules/gallery';
 import forms from './modules/forms';
+import calc from './modules/calc';
 
 document.addEventListener('DOMContentLoaded', () => {
     slider();
@@ -50,4 +51,13 @@ document.addEventListener('DOMContentLoaded', () => {
     );
 
     forms();
+
+    calc();
+    tabs(
+        '.balcon_icons',
+        '.balcon_icons_img',
+        '.big_img img',
+        'do_image_more',
+        'inline-block'
+    );
 });

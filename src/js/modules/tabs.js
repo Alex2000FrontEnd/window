@@ -1,11 +1,11 @@
 function tabs(wrapperMenuSelector, menusSelector, contentsSelector,
-    activeClassMenu) {
+    activeClassMenu, display = 'block') {
     const wrapperMenu = document.querySelector(wrapperMenuSelector),
           menus = wrapperMenu.querySelectorAll(menusSelector),
           contents = document.querySelectorAll(contentsSelector);
 
     function showTab(i = 0) {
-        contents[i].style.display = 'block';
+        contents[i].style.display = display;
         menus[i].classList.add(activeClassMenu);
     }
 
